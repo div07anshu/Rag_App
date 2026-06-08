@@ -5,8 +5,8 @@ import math
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
 vector_store = load_db(embeddings)
-retriever = vector_store.as_retriever(search_kwargs={"k": 20})
-result = retriever.invoke("Nitesh Tiwari")
+retriever = vector_store.as_retriever(search_kwargs={"k": 50})
+result = retriever.invoke("space exploration movies")
 
 result = sorted(
     result,
