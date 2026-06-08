@@ -1,164 +1,157 @@
-# Movie Recommendation System
+# IMDb Movie Recommendation System
 
-A semantic movie recommendation system built using LangChain, ChromaDB, HuggingFace Embeddings, and the MovieLens dataset.
+## Overview
 
-The system converts movie information into vector embeddings and performs semantic similarity search to recommend relevant movies based on natural language queries.
+A movie recommendation system built using IMDb datasets, Hugging Face embeddings, LangChain, and ChromaDB.
 
-
-## Features
-
-- Semantic movie search
-- ChromaDB vector database
-- HuggingFace sentence-transformer embeddings
-- MovieLens dataset integration
-- Genome tag enrichment
-- Average rating and rating count integration
-- Natural language movie queries
-
-
-## Dataset
-
-This project uses the MovieLens dataset and combines information from:
-
-- movies.csv
-- ratings.csv
-- genome-tags.csv
-- genome-scores.csv
-
-The final movie documents contain:
-
-- Movie Title
-- Genres
-- Average Rating
-- Rating Count
-- Top Relevant Tags
-
-Example:
-
-Title : The Martian (2015)
-
-Genres : Adventure, Drama, Sci-Fi
-
-Average Rating : 4.04
-
-Rating Count : 890
-
-Top Tags : astronauts, mars, space travel, nasa, space program
-
-
-## Project Architecture
-
-
-MovieLens Dataset
-        │
-        ▼
-Data Processing (Pandas)
-        │
-        ▼
-Document Creation
-        │
-        ▼
-HuggingFace Embeddings
-        │
-        ▼
-Chroma Vector Database
-        │
-        ▼
-Retriever
-        │
-        ▼
-Semantic Search
-
-
-
-## Project Structure
-
-.
-├── data/
-│   ├── movies.csv
-│   ├── finalrating.csv
-│   ├── genome-tags.csv
-│   └── genome-scores.csv
-│
-├── src/
-│   ├── build_db.py
-│   ├── database.py
-│   └── search.py
-│
-├── vector_data/
-│   └── movie_db/
-│
-├── README.md
-├── pyproject.toml
-├── requirements.txt
-└── .env
-
+The system converts movie information into vector embeddings and performs semantic search to recommend relevant movies based on natural language queries.
 
 ---
 
-## Installation
+## Features
 
-Clone the repository:
+* Semantic movie search
+* IMDb-based movie database
+* Director information
+* Top-billed actor information
+* IMDb ratings and vote counts
+* ChromaDB vector storage
+* Hugging Face sentence-transformer embeddings
+* Ranking based on rating and popularity
 
-git clone <repository-url>
-cd movie-recommender
+---
 
-Install dependencies:
+## Dataset
 
-uv sync
+This project uses IMDb public datasets:
 
+* title.basics.tsv
+* title.ratings.tsv
+* title.crew.tsv
+* title.principals.tsv
+* name.basics.tsv
 
-## Build the Database
+Movies with fewer than 5000 votes are excluded to improve recommendation quality.
 
-python src/build_db.py
-
-
-This will:
-
-1. Load movie metadata.
-2. Merge ratings information.
-3. Merge genome tags.
-4. Create enriched movie documents.
-5. Generate embeddings.
-6. Store vectors in ChromaDB.
-
-
-## Search Movies
-
-python src/search.py
-
-Example query:
-
-result = retriever.invoke(
-    "space survival movie like the martian"
-)
-
-
-## Example Queries
-
-- fantasy adventure movie
-- movie like interstellar
-- emotional animated movie
-- science fiction space exploration movie
-- movie about astronauts stranded in space
-- highly rated fantasy adventure movie
-
+---
 
 ## Technologies Used
 
-- Python
-- Pandas
-- LangChain
-- ChromaDB
-- HuggingFace Embeddings
-- MovieLens Dataset
+* Python
+* Pandas
+* LangChain
+* ChromaDB
+* Hugging Face Embeddings
+* IMDb Dataset
 
+Embedding Model:
 
-## Future Improvements
+sentence-transformers/all-MiniLM-L6-v2
 
-- Metadata-based filtering
-- Rating-based reranking
-- Gemini integration
-- Streamlit web interface
-- Conversational movie recommender
-- Full RAG pipeline
+---
+
+## Database Construction
+
+Each movie document contains:
+
+* Title
+* Release Year
+* Genres
+* IMDb Rating
+* Vote Count
+* Director Names
+* Top 3 Actors
+
+Example:
+
+Title : Interstellar
+
+Year : 2014
+
+Genres : Adventure, Drama, Sci-Fi
+
+Rating : 8.7
+
+Votes : 2200000
+
+Directors : Christopher Nolan
+
+Actors : Matthew McConaughey, Anne Hathaway, Jessica Chastain
+
+---
+
+## Building the Database
+
+Run:
+
+python src/build_db.py
+
+This will:
+
+1. Load IMDb datasets
+2. Extract directors and actors
+3. Generate embeddings
+4. Store vectors inside ChromaDB
+
+---
+
+## Searching Movies
+
+Run:
+
+python src/search.py
+
+Example queries:
+
+* Christopher Nolan movies
+* Shah Rukh Khan movies
+* Aamir Khan movies
+* High rated sci-fi movies
+* Space exploration movies
+* Sports drama movies
+
+---
+
+## Ranking Strategy
+
+Retrieved movies are ranked using:
+
+score = rating × log10(votes)
+
+This balances movie quality and popularity.
+
+---
+
+## Current Limitations
+
+* Plot summaries are not included.
+* Actor/director query routing is not implemented yet.
+* Semantic search may occasionally return loosely related movies.
+* No web interface currently available.
+
+---
+
+## Roadmap
+
+### Phase 1
+
+* Actor query routing
+* Director query routing
+* Metadata-based filtering
+
+### Phase 2
+
+* Gemini reranking layer
+* Natural language recommendation explanations
+
+### Phase 3
+
+* Plot summary integration
+* Hybrid retrieval system
+
+### Phase 4
+
+* Streamlit interface
+* Online deployment
+
+##
