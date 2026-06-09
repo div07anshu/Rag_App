@@ -60,11 +60,12 @@ movie_df = movie_df.merge(
     how="inner",
 )
 
-#this creates a dict of pair of nconst with there primary name 
+# this creates a dict of pair of nconst with there primary name
 pairs = zip(name_df["nconst"], name_df["primaryName"])
 director_look = dict(pairs)
 
-#helper function for getting director name from nconst
+
+# helper function for getting director name from nconst
 def get_director_name(director_ids):
 
     if pd.isna(director_ids) or director_ids == r"\N":
@@ -80,7 +81,7 @@ def get_director_name(director_ids):
     return ", ".join(names)
 
 
-#it will create a new coloumn named director_names and each row get_director_name func will be called
+# it will create a new coloumn named director_names and each row get_director_name func will be called
 movie_df["director_names"] = movie_df["directors"].apply(get_director_name)
 
 # load the principle file and select the required columns
@@ -135,7 +136,7 @@ movie_df = movie_df.merge(
     how="left",
 )
 
-#handles the case when no actor is there 
+# handles the case when no actor is there
 movie_df["actor"] = movie_df["actor"].fillna("Actor Not Available")
 
 # now create the document
@@ -166,6 +167,7 @@ for _, row in movie_df.iterrows():
             "votes": row["numVotes"],
             "tconst": row["tconst"],
             "director": row["director_names"],
+            "actor": row["actor"],
         },
     )
 
