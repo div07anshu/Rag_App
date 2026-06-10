@@ -30,14 +30,14 @@ def route_query(query):
     for actor in actor_set:
         pattern = r"\b" + re.escape(actor) + r"\b"
         if re.search(pattern, query):
-            return "actor"
+            return "actor", actor
 
     for director in director_set:
         pattern = r"\b" + re.escape(director) + r"\b"
         if re.search(pattern, query):
-            return "director"
+            return "director", director
 
-    return "semantic"
+    return "semantic", query
 
 
 def actor_search(query):
@@ -91,15 +91,15 @@ def semantic_search(query):
 
 
 ans = []
-route = route_query(query)
+route, entity = route_query(query)
 print(route)
 
 if route == "actor":
-    ans = actor_search(query)
+    ans = actor_search(entity)
 elif route == "director":
-    ans = director_search(query)
+    ans = director_search(entity)
 else:
-    ans = semantic_search(query)
+    ans = semantic_search(entity)
 
 
 for movie in ans:
