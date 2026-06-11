@@ -1,15 +1,33 @@
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_core.prompts import ChatPromptTemplate
+from dotenv import load_dotenv
+from pydantic import BaseModel
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.output_parsers import PydanticOutputParser
+from typing import List, Optional
 from db import load_db
 import math
 import re
 
+load_dotenv()
+
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
 vector_store = load_db(embeddings)
+model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite")
 
 data = vector_store.get(
     include=["documents", "metadatas"],
 )
+
+
+class qeueryintent(BaseModel):
+
+    actor: Optional[str]
+    director: Optional[str]
+    genre: List[str]
+    year: Optional[int]
+
 
 actor_set = set()
 director_set = set()
@@ -22,8 +40,12 @@ for meta in data["metadatas"]:
 
 
 query = input("enter your query : ").lower()
+parser = PydanticOutputParser(pydantic_object=qeueryintent)
 
-
+prompt = ChatPromptTemplate.from_messages([
+    
+])
+                                          
 def route_query(query):
     query = query.lower()
 

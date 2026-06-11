@@ -139,6 +139,25 @@ movie_df = movie_df.merge(
 # handles the case when no actor is there
 movie_df["actor"] = movie_df["actor"].fillna("Actor Not Available")
 
+#saved the movie_df to use it in omdb.py
+movie_df.to_csv(
+    "data/movie_data.csv",
+    index=False,
+)
+
+#contain plot for the movies
+plot_df = pd.read_csv("data/plots.csv")
+
+#merge the plots and movies using tconst
+movie_df = movie_df.merge(
+    plot_df,
+    on="tconst",
+    how="left",
+)
+
+#for the movies which doesnt have plot fill it with pna
+movie_df["plot"] = movie_df["plot"].fillna("Plot Not Available")
+
 # now create the document
 documents = []
 
@@ -160,6 +179,7 @@ for _, row in movie_df.iterrows():
     Votes : {row["numVotes"]}
     Directors : {row["director_names"]}
     Actors : {row["actor"]}
+    Plot : {row["plot"]}
     """,
         metadata={
             "year": row["startYear"],
@@ -172,5 +192,6 @@ for _, row in movie_df.iterrows():
     )
 
     documents.append(doc)
+    print(len(documents))
 
 create_db(documents, embeddings)
