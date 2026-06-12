@@ -3,7 +3,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 
 from pydantic import BaseModel
 from typing import List, Optional, cast
-from db import load_db
+from backend.src.db.chroma import load_db
 from dotenv import load_dotenv
 
 load_dotenv()

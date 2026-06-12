@@ -1,9 +1,9 @@
 from langchain_huggingface import HuggingFaceEmbeddings
-from db import load_db
+from backend.src.db.chroma import load_db
 from dotenv import load_dotenv
-from gemini import improve_query
-from gemini import query_decomposition
-from gemini import should_decompose
+from backend.src.services.gemini import improve_query
+from backend.src.services.gemini import query_decomposition
+from backend.src.services.gemini import should_decompose
 import math
 import re
 

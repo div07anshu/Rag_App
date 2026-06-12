@@ -1,6 +1,6 @@
 import pandas as pd
 from langchain_core.documents import Document
-from db import create_db
+from backend.src.db.chroma import create_db
 from langchain_huggingface import HuggingFaceEmbeddings
 from dotenv import load_dotenv
 

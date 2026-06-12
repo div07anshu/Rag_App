@@ -10,13 +10,13 @@ wheels/
 .venv/
 
 # Environment variables
-.env
+backend/.env
 
 #database
-database/imdb_db/
+backend/database/
 
 #data 
-data/
+backend/data/
 
 # VS Code
 .vscode/
@@ -27,3 +27,6 @@ data/
 # OS files
 .DS_Store
 Thumbs.db
+
+#frontend
+frontend/node_modules/
