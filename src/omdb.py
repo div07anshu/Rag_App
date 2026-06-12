@@ -6,14 +6,11 @@ import pandas as pd
 
 load_dotenv()
 
-API_KEY = os.getenv("OMDB_API_KEY")
+API_KEY = os.getenv("OMDB_API_KEY2")
 
 #read the movie_data
 movie_df = pd.read_csv("data/movie_data.csv")
 plot_df = pd.read_csv("data/plots.csv")
-
-print(len(plot_df))
-exit()
 
 #sort the movies with high votes
 movie_df = movie_df.sort_values(

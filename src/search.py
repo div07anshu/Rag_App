@@ -1,33 +1,20 @@
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_core.prompts import ChatPromptTemplate
-from dotenv import load_dotenv
-from pydantic import BaseModel
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.output_parsers import PydanticOutputParser
-from typing import List, Optional
 from db import load_db
+from dotenv import load_dotenv
+from gemini import improve_query
+from gemini import query_decomposition
+from gemini import should_decompose
 import math
 import re
 
 load_dotenv()
 
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-
 vector_store = load_db(embeddings)
-model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite")
 
 data = vector_store.get(
     include=["documents", "metadatas"],
 )
-
-
-class qeueryintent(BaseModel):
-
-    actor: Optional[str]
-    director: Optional[str]
-    genre: List[str]
-    year: Optional[int]
-
 
 actor_set = set()
 director_set = set()
@@ -39,13 +26,6 @@ for meta in data["metadatas"]:
         actor_set.add(actor.strip().lower())
 
 
-query = input("enter your query : ").lower()
-parser = PydanticOutputParser(pydantic_object=qeueryintent)
-
-prompt = ChatPromptTemplate.from_messages([
-    
-])
-                                          
 def route_query(query):
     query = query.lower()
 
@@ -98,37 +78,50 @@ def director_search(query):
 
 def semantic_search(query):
     query = query.lower()
-    retriever = vector_store.as_retriever(search_kwargs={"k": 20})
+    retriever = vector_store.as_retriever(search_kwargs={"k": 15})
+    unique_results = []
 
-    result = retriever.invoke(query)
-    print("Retrieved:", len(result))
+    if should_decompose(query):
+        loq = query_decomposition(query)
 
-    result = sorted(
-        result,
-        key=lambda x: (x.metadata["rating"] * math.log10(x.metadata["votes"])),
+        results = []
+
+        for q in loq:
+            output = retriever.invoke(q)
+            results.extend(output)
+
+        seen = set()
+
+        for result in results:
+            tconst = result.metadata["tconst"]
+            if tconst not in seen:
+                seen.add(tconst)
+                unique_results.append(result)
+
+    else:
+        unique_results = retriever.invoke(query)
+
+    unique_results = sorted(
+        unique_results,
+        key=lambda doc: (doc.metadata["rating"] * math.log10(doc.metadata["votes"])),
         reverse=True,
     )
 
-    return result[:5]
+    return unique_results[:5]
 
 
-ans = []
-route, entity = route_query(query)
-print(route)
+def search(query):
+    improved_query = improve_query(query)
+    result = []
 
-if route == "actor":
-    ans = actor_search(entity)
-elif route == "director":
-    ans = director_search(entity)
-else:
-    ans = semantic_search(entity)
+    route, entity = route_query(improved_query)
 
-
-for movie in ans:
-
-    if isinstance(movie, tuple):
-        print(movie[0])
+    if route == "actor":
+        result = actor_search(entity)
+    elif route == "director":
+        result = director_search(entity)
     else:
-        print(movie.page_content)
+        result = semantic_search(entity)
 
-    print("-" * 50)
+    return result
+
