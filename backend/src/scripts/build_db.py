@@ -1,6 +1,6 @@
 import pandas as pd
 from langchain_core.documents import Document
-from backend.src.db.chroma import create_db
+from src.db.chroma import create_db
 from langchain_huggingface import HuggingFaceEmbeddings
 from dotenv import load_dotenv
 
@@ -139,23 +139,23 @@ movie_df = movie_df.merge(
 # handles the case when no actor is there
 movie_df["actor"] = movie_df["actor"].fillna("Actor Not Available")
 
-#saved the movie_df to use it in omdb.py
+# saved the movie_df to use it in omdb.py
 movie_df.to_csv(
     "data/movie_data.csv",
     index=False,
 )
 
-#contain plot for the movies
+# contain plot for the movies
 plot_df = pd.read_csv("data/plots.csv")
 
-#merge the plots and movies using tconst
+# merge the plots and movies using tconst
 movie_df = movie_df.merge(
     plot_df,
     on="tconst",
     how="left",
 )
 
-#for the movies which doesnt have plot fill it with pna
+# for the movies which doesnt have plot fill it with pna
 movie_df["plot"] = movie_df["plot"].fillna("Plot Not Available")
 
 # now create the document

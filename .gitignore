@@ -30,3 +30,4 @@ Thumbs.db
 
 #frontend
 frontend/node_modules/
+.vite

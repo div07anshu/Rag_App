@@ -1,9 +1,13 @@
 import React from 'react'
+import Navbar from '../components/Navbar/Navbar.jsx'
+import Querysection from '../components/QuerySection/Querysection.jsx'
 
 function Home() {
     return (
         <>
-            <h1>CineSage</h1>
+            <Navbar/>
+            <Querysection/>
+
         </>
     )
 }

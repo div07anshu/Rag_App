@@ -1,0 +1,21 @@
+.query-section {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.query-section h1 {
+    margin: 0;
+    color: white;
+    font-size: 3rem;
+}
+
+.query-section p {
+    margin-top: 15px;
+    color: #9ca3af;
+    font-size: 1.1rem;
+}

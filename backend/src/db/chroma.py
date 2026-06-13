@@ -5,7 +5,7 @@ def create_db(documents, embeddings):
     vector_store = Chroma.from_documents(
         documents=documents,
         embedding=embeddings,
-        persist_directory="./database/imdb_db",
+        persist_directory="./backend/database/imdb_db",
     )
 
     return vector_store
@@ -13,7 +13,7 @@ def create_db(documents, embeddings):
 
 def load_db(embeddings):
     vector_store = Chroma(
-        persist_directory="./database/imdb_db",
+        persist_directory="./backend/database/imdb_db",
         embedding_function=embeddings,
     )
 

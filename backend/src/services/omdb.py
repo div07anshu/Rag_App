@@ -8,11 +8,11 @@ load_dotenv()
 
 API_KEY = os.getenv("OMDB_API_KEY2")
 
-#read the movie_data
-movie_df = pd.read_csv("data/movie_data.csv")
-plot_df = pd.read_csv("data/plots.csv")
+# read the movie_data
+movie_df = pd.read_csv("backend/data/movie_data.csv")
+plot_df = pd.read_csv("backend/data/plots.csv")
 
-#sort the movies with high votes
+# sort the movies with high votes
 movie_df = movie_df.sort_values(
     "numVotes",
     ascending=False,
@@ -21,7 +21,7 @@ movie_df = movie_df.sort_values(
 # it contains the id whoose plots are with us
 done_ids = set(plot_df["tconst"])
 
-#this remove the movies from movie_df with id that are in done_ids
+# this remove the movies from movie_df with id that are in done_ids
 movie_df = movie_df[~movie_df["tconst"].isin(done_ids)]
 plots = plot_df.to_dict("records")
 
@@ -53,7 +53,7 @@ for _, row in movie_df.head(1000).iterrows():
     if len(plots) % 100 == 0:
         plot_df = pd.DataFrame(plots)
         plot_df.to_csv(
-            "data/plots.csv",
+            "backend/data/plots.csv",
             index=False,
         )
 
@@ -64,6 +64,6 @@ for _, row in movie_df.head(1000).iterrows():
 plot_df = pd.DataFrame(plots)
 
 plot_df.to_csv(
-    "data/plots.csv",
+    "backend/data/plots.csv",
     index=False,
 )
