@@ -178,7 +178,7 @@ for _, row in movie_df.iterrows():
         page_content=f"""
     Title : {row["primaryTitle"]}
     Year : {row["startYear"]}
-    Genres : {genres}
+    Genres : {", ".join(genres)}
     Rating :{row["averageRating"]}
     Votes : {row["numVotes"]}
     Directors : {row["director_names"]}
@@ -186,13 +186,15 @@ for _, row in movie_df.iterrows():
     Plot : {row["plot"]}
     """,
         metadata={
+            "title": row["primaryTitle"],
+            "plot": row["plot"],
             "year": row["startYear"],
+            "genres": genres,
             "rating": row["averageRating"],
             "votes": row["numVotes"],
-            "tconst": row["tconst"],
             "director": row["director_names"],
             "actor": row["actor"],
-            "genres": genres,
+            "tconst": row["tconst"],
         },
     )
 

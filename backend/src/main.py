@@ -15,6 +15,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5174",
+        "http://localhost:5173",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -55,20 +56,21 @@ async def movie_search(request: Query):
             timeout=30,
         )
 
-        # omdb_db = omdb_db.json()
+        omdb_db = omdb_db.json()
 
         formatted.append(
             {
-                "genres": meta.get("genres", []),
-                "content": doc,
+                "title": meta["title"],
+                "plot": meta["plot"],
+                "genres": meta["genres"],
                 "year": meta["year"],
                 "rating": meta["rating"],
                 "votes": meta["votes"],
                 "director": meta["director"],
                 "actor": meta["actor"],
                 "imdb_id": meta["tconst"],
-                #"poster" : omdb_db["Poster"]
-                # "runtime" : obdb_db["Runtime"]
+                "poster": omdb_db.get("Poster"),
+                "runtime": omdb_db.get("Runtime"),
             }
         )
 

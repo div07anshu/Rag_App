@@ -1,5 +1,7 @@
 .movie-card {
-    padding: 28px;
+    display: flex;
+    gap: 25px;
+    padding: 20px;
     background: rgba(11, 15, 25, 0.75);
     border: 1px solid rgba(192, 132, 252, 0.08);
     border-radius: 24px;
@@ -9,26 +11,39 @@
 
 .movie-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(192, 132, 252, 0.18);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    border-color: rgba(192, 132, 252, 0.25);
+    box-shadow: 0 12px 40px rgba(192, 132, 252, 0.08);
+}
+
+.movie-poster {
+    flex-shrink: 0;
+}
+
+.movie-poster img {
+    width: 160px;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 15px;
 }
 
 .movie-content {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 20px;
 }
 
 .movie-top {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    padding-right: 8px;
 }
 
 .movie-top h2 {
-    margin: 0 0 12px;
+    margin: 0;
     color: white;
-    font-size: 2rem;
+    font-size: 1.75rem;
+    line-height: 1.2;
     font-weight: 700;
 }
 
@@ -37,40 +52,45 @@
     align-items: center;
     gap: 8px;
     color: #facc15;
+    margin-right: 40px;
+    font-size: 1.3rem;
     font-weight: 700;
-    font-size: 1.1rem;
 }
 
 .genres {
     display: flex;
-    gap: 10px;
     flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
 }
 
 .genre-tag {
-    padding: 6px 12px;
+    padding: 8px 14px;
     border-radius: 999px;
-    background: rgba(192, 132, 252, 0.08);
+    background: rgba(192, 132, 252, 0.12);
     color: #c084fc;
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .movie-actors {
     display: flex;
     align-items: center;
     gap: 10px;
+    margin-top: 22px;
     color: #d1d5db;
 }
 
 .movie-reason {
-    padding: 18px;
-    background: rgba(192, 132, 252, 0.05);
+    margin-top: 22px;
+    max-width: 900px;
+    padding: 18px 20px;
+    background: rgba(192, 132, 252, 0.06);
     border-left: 4px solid #c084fc;
-    border-radius: 12px;
+    border-radius: 16px;
 }
 
-.reason-header {
+.movie-reason-header {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -78,29 +98,32 @@
     color: white;
 }
 
-.reason-header svg {
-    color: #c084fc;
-}
-
-.reason-header h4 {
+.movie-reason-header h4 {
     margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
 }
 
 .movie-reason p {
     margin: 0;
     color: #d1d5db;
+    font-size: 0.92rem;
     line-height: 1.7;
 }
 
 .movie-plot {
+    margin-top: 22px;
     color: #9ca3af;
+    margin-bottom: 2px;
     line-height: 1.8;
 }
 
 .movie-footer {
     display: flex;
-    gap: 24px;
     flex-wrap: wrap;
+    gap: 28px;
+    margin-top: auto;
+    padding-top: 10px;
 }
 
 .movie-meta {
@@ -108,8 +131,6 @@
     align-items: center;
     gap: 8px;
     color: #d1d5db;
-    font-size: 0.92rem;
-    font-weight: 500;
 }
 
 .movie-meta svg {

@@ -6,12 +6,13 @@ import Results from '../components/Results/Results.jsx'
 import { useState } from 'react'
 
 function Home() {
+    const [loading, setloading] = useState(false)
     const [movies, setmovies] = useState([])
     return (
         <>
             <Navbar />
-            <Querysection setmovies={setmovies} />
-            <Results movies={movies} />
+            <Querysection setmovies={setmovies} setloading={setloading} />
+            <Results movies={movies} loading={loading} />
         </>
     )
 }

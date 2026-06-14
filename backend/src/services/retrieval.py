@@ -111,7 +111,14 @@ def semantic_search(query):
 
 
 def search(query):
-    improved_query = improve_query(query)
+
+    try:
+        improved_query = improve_query(query)
+
+    except Exception as e:
+        print(f"Gemini failed: {e}")
+
+    improved_query = query
     result = []
 
     route, entity = route_query(improved_query)

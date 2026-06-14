@@ -2,24 +2,29 @@ import { useState } from "react";
 import "./Searchbar.css"
 import { SearchIcon, ArrowRight } from 'lucide-react'
 
-const Searchbar = ({ setmovies }) => {
+const Searchbar = ({ setmovies, setloading }) => {
 
     async function handlesearch(e) {
         e.preventDefault();
+        setloading(true);
 
-        const response = await fetch(
-            "http://localhost:8000/search", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                ques: query,
+        try {
+            const response = await fetch(
+                "http://localhost:8000/search", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    ques: query,
+                })
             })
-        })
 
-        const data = await response.json()
-        setmovies(data.results);
+            const data = await response.json()
+            setmovies(data.results);
+        } finally {
+            setloading(false)
+        }
     }
 
     const [query, setquery] = useState("")

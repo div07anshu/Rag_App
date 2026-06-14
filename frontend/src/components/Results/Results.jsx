@@ -2,17 +2,27 @@ import React from 'react'
 import "./Results.css"
 import Moviecard from '../Moviecard/Moviecard'
 
-function Results({ movies }) {
+function Results({ movies, loading }) {
+    console.log("Loading:", loading);
+    console.log("Movies:", movies);
+
+    if (loading) {
+        return (
+            <div className='loading-state' >
+                <div className='spinner'></div>
+                <h2>Understanding your movie request...</h2>
+            </div >
+        )
+    }
 
     if (movies.length == 0) {
         return null;
     }
 
     return (
-        <div className='result-section'>
-            <div className='result-header'>
+        <div className='results-section'>
+            <div className='results-header'>
                 <h2>✨ Top Results</h2>
-                <p>{movies.length} recommendations found</p>
             </div>
             <div className='result-container'>
                 {movies.map((movie, index) => (
