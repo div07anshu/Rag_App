@@ -85,3 +85,40 @@ nav {
 .profile-btn:active {
     transform: scale(0.9);
 }
+
+@media (max-width: 1400px) {
+    nav {
+        padding: 0 28px;
+    }
+
+    .navbar-center {
+        gap: 28px;
+    }
+}
+
+@media (max-width: 1200px) {
+    nav {
+        padding: 0 20px;
+    }
+
+    .navbar-left h3 {
+        font-size: 1.6rem;
+    }
+
+    .navbar-left p {
+        font-size: 0.75rem;
+    }
+
+    .navbar-center {
+        gap: 22px;
+    }
+
+    .navbar-center a {
+        font-size: 0.95rem;
+    }
+
+    .profile-btn {
+        width: 44px;
+        height: 44px;
+    }
+}

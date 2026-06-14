@@ -1,9 +1,9 @@
 from langchain_huggingface import HuggingFaceEmbeddings
-from backend.src.db.chroma import load_db
+from src.db.chroma import load_db
 from dotenv import load_dotenv
-from backend.src.services.gemini import improve_query
-from backend.src.services.gemini import query_decomposition
-from backend.src.services.gemini import should_decompose
+from src.services.gemini import improve_query
+from src.services.gemini import query_decomposition
+from src.services.gemini import should_decompose
 import math
 import re
 
@@ -124,4 +124,3 @@ def search(query):
         result = semantic_search(entity)
 
     return result
-

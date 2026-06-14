@@ -3,19 +3,23 @@ from langchain_core.documents import Document
 from src.db.chroma import create_db
 from langchain_huggingface import HuggingFaceEmbeddings
 from dotenv import load_dotenv
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parents[2]
+CSV_PATH = BASE_DIR / "data"
 
 load_dotenv()
 
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
 basic_df = pd.read_csv(
-    "data/title.basics.tsv",
+    str(CSV_PATH / "title.basics.tsv"),
     sep="\t",
     low_memory=False,
 )
 
 rating_df = pd.read_csv(
-    "data/title.ratings.tsv",
+    str(CSV_PATH / "title.ratings.tsv"),
     sep="\t",
     low_memory=False,
 )
@@ -41,14 +45,14 @@ movie_df = movie_df[
 ]
 
 crew_df = pd.read_csv(
-    "data/title.crew.tsv",
+    str(CSV_PATH / "title.crew.tsv"),
     sep="\t",
     low_memory=False,
     usecols=["tconst", "directors"],
 )
 
 name_df = pd.read_csv(
-    "data/name.basics.tsv",
+    str(CSV_PATH / "name.basics.tsv"),
     sep="\t",
     low_memory=False,
     usecols=["nconst", "primaryName"],
@@ -86,7 +90,7 @@ movie_df["director_names"] = movie_df["directors"].apply(get_director_name)
 
 # load the principle file and select the required columns
 principal_df = pd.read_csv(
-    "data/title.principals.tsv",
+    str(CSV_PATH / "title.principals.tsv"),
     sep="\t",
     low_memory=False,
     usecols=["tconst", "ordering", "nconst", "category"],
@@ -141,12 +145,12 @@ movie_df["actor"] = movie_df["actor"].fillna("Actor Not Available")
 
 # saved the movie_df to use it in omdb.py
 movie_df.to_csv(
-    "data/movie_data.csv",
+    str(CSV_PATH / "movie_data.csv"),
     index=False,
 )
 
 # contain plot for the movies
-plot_df = pd.read_csv("data/plots.csv")
+plot_df = pd.read_csv(str(CSV_PATH / "plots.csv"))
 
 # merge the plots and movies using tconst
 movie_df = movie_df.merge(
@@ -166,9 +170,9 @@ for _, row in movie_df.iterrows():
     genres = row["genres"]
 
     if genres == r"\N":
-        genres = "Unknown"
+        genres = ["Unknown"]
     else:
-        genres = row["genres"].replace(",", ", ")
+        genres = row["genres"].split(",")
 
     doc = Document(
         page_content=f"""
@@ -188,10 +192,10 @@ for _, row in movie_df.iterrows():
             "tconst": row["tconst"],
             "director": row["director_names"],
             "actor": row["actor"],
+            "genres": genres,
         },
     )
 
     documents.append(doc)
-    print(len(documents))
 
 create_db(documents, embeddings)
