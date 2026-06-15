@@ -1,4 +1,5 @@
 .query-section {
+    margin-top: 10vh;
     min-height: 55vh;
     display: flex;
     flex-direction: column;

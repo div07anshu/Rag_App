@@ -20,7 +20,7 @@ function Results({ movies, loading }) {
     }
 
     return (
-        <div className='results-section'>
+        <div className='results-section' id='results'>
             <div className='results-header'>
                 <h2>✨ Top Results</h2>
             </div>

@@ -65,7 +65,16 @@ def query_decomposition(query):
     return response.sub_queries
 
 
+class Explanation(BaseModel):
+    title: str
+    reason: str
+
+
+class Explanations(BaseModel):
+    explanations: List[Explanation]
+
+
 def should_decompose(query):
     keywords = ["with", "like", "about", "similar", "and"]
 
-    return len(query.split()) >= 5 or any( k in query for k in keywords)
+    return len(query.split()) >= 5 or any(k in query for k in keywords)

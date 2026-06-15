@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 from src.services.retrieval import search
 from fastapi.middleware.cors import CORSMiddleware
+from src.services.groq import generate_explanation
 
 app = FastAPI()
 load_dotenv()
@@ -36,7 +37,7 @@ def root():
 async def movie_search(request: Query):
     results = search(request.ques)
 
-    formatted = []
+    normalized_results = []
 
     for result in results:
         if isinstance(result, tuple):
@@ -45,7 +46,20 @@ async def movie_search(request: Query):
             doc = result.page_content
             meta = result.metadata
 
+        normalized_results.append(
+            {
+                "content": doc,
+                "meta": meta,
+            }
+        )
+
+    formatted = []
+
+    for result in normalized_results:
+        meta = result["meta"]
         imdb_id = meta["tconst"]
+
+        reason = generate_explanation(request.ques, result)
 
         omdb_db = requests.get(
             "http://www.omdbapi.com/",
@@ -71,6 +85,7 @@ async def movie_search(request: Query):
                 "imdb_id": meta["tconst"],
                 "poster": omdb_db.get("Poster"),
                 "runtime": omdb_db.get("Runtime"),
+                "reason": reason,
             }
         )
 

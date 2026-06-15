@@ -50,7 +50,7 @@
 
 .loading-state {
     width: 75vw;
-    margin: 60px auto;
+    margin: 0px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
