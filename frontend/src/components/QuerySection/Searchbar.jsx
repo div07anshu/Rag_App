@@ -10,7 +10,7 @@ const Searchbar = ({ setmovies, setloading }) => {
 
         try {
             const response = await fetch(
-                "http://localhost:8000/search", {
+                "ragapp-production-b45d.up.railway.app", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
