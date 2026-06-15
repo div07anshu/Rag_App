@@ -10,6 +10,7 @@ langchain-google-genai
 langchain-groq
 langchain-mistralai
 python-dotenv
+sentence-transformers==5.5.1
 faiss-cpu
 tiktoken
 fastapi
