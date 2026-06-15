@@ -10,7 +10,7 @@ const Searchbar = ({ setmovies, setloading }) => {
 
         try {
             const response = await fetch(
-                "ragapp-production-b45d.up.railway.app", {
+                "ragapp-production-b45d.up.railway.app/search", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
